@@ -1,6 +1,7 @@
 from turtle import Turtle
 
 BULLET_SPEED = 10
+ENEMY_BULLET_SPEED = 3
 
 
 class Bullet(Turtle):
@@ -17,6 +18,10 @@ class Bullet(Turtle):
     def move(self):
         self.current_y = self.ycor()
         self.forward(BULLET_SPEED)
+
+    def enemy_move(self):
+        self.current_y = self.ycor()
+        self.forward(ENEMY_BULLET_SPEED)
 
         # Moves up until it either hits an alien or reaches past the top of the screen.
         # After reaching the end of movement, the bullet instance is deleted.

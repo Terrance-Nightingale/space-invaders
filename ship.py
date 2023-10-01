@@ -10,7 +10,9 @@ class Ship(Turtle):
     def __init__(self, screen=Screen):
         super().__init__()
         self.root = screen
+        self.bullet = None
         self.can_shoot = True
+        self.is_shooting = False
         self.shape(ship_img)
         self.shapesize(stretch_wid=0.1, stretch_len=0.1)
         self.setpos(0, -280)
@@ -27,18 +29,25 @@ class Ship(Turtle):
         if current_x + 45 <= 400:
             self.setx(current_x + 20)
 
+    def shooting(self):
+        if self.can_shoot:
+            self.can_shoot = False
+        try:
+            if self.bullet.current_y <= 400:
+                self.bullet.move()
+            else:
+                del self.bullet
+                self.can_shoot = True
+                self.is_shooting = False
+        except AttributeError:
+            pass
+
     def shoot(self):
         if self.can_shoot:
-            bullet = Bullet()
+            self.bullet = Bullet()
             ship_x = self.xcor()
-            bullet.setpos(ship_x, -200)
-            self.can_shoot = False
-            while bullet.current_y <= 400:
-                bullet.move()
-                self.root.update()
-            if bullet.current_y > 400:
-                del bullet
-                self.can_shoot = True
+            self.bullet.setpos(ship_x, -200)
+            self.is_shooting = True
 
     def lose_life(self):
         # Deletes a life from self.lives

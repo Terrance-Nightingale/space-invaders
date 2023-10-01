@@ -1,12 +1,12 @@
-from turtle import Turtle, Screen, register_shape
+from turtle import Turtle, register_shape
+from bullet import Bullet
 
 alien_img = "./images/alien.gif"
 register_shape(alien_img)
 
 
 class AlienManager:
-    def __init__(self, screen=Screen):
-        self.root = screen
+    def __init__(self):
         self.swarm = []
         self.create_swarm()
 
@@ -26,31 +26,18 @@ class AlienManager:
             y_pos -= 75
             start_x *= -1
 
-    def move_swarm(self):
-        for alien in self.swarm:
-            alien.move_right()
+    def shoot(self):
+        # TODO Have a bullet shoot out from a random existing alien every x time interval.
+        bullet = Bullet()
+        ship_x = self.xcor()
+        bullet.setpos(ship_x, -200)
+        self.can_shoot = False
+        while bullet.current_y >= -400:
+            bullet.enemy_move()
             self.root.update()
-        for alien in self.swarm:
-            alien.move_down()
-            self.root.update()
-        for alien in self.swarm:
-            alien.move_right()
-            self.root.update()
-        for alien in self.swarm:
-            alien.move_down()
-            self.root.update()
-        for alien in self.swarm:
-            alien.move_left()
-            self.root.update()
-        for alien in self.swarm:
-            alien.move_down()
-            self.root.update()
-        for alien in self.swarm:
-            alien.move_left()
-            self.root.update()
-        for alien in self.swarm:
-            alien.move_down()
-            self.root.update()
+        if bullet.current_y > 400:
+            del bullet
+        pass
 
 
 class Alien(Turtle):
