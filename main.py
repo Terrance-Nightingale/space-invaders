@@ -1,51 +1,56 @@
 import time
+from random import randint
 from turtle import Screen
 from ship import Ship
 from scoreboard import Scoreboard
-from aliens import AlienManager
+from aliens import AlienManager, Alien
+
+
+def select_alien():
+    position = randint(0, len(aliens.swarm) - 1)
+    shooter = aliens.swarm[position]
+    shooter.shoot()
+
+
+def check_shoot_state(alien=Alien):
+    if alien.is_shooting:
+        alien.shooting()
+    if ship.is_shooting:
+        ship.shooting()
+
+
+def move_aliens_down():
+    for alien in aliens.swarm:
+        alien.move_down()
+        check_shoot_state(alien)
+        root.update()
+
+
+def move_aliens_right():
+    for alien in aliens.swarm:
+        alien.move_right()
+        check_shoot_state(alien)
+        root.update()
+
+
+def move_aliens_left():
+    for alien in aliens.swarm:
+        alien.move_left()
+        check_shoot_state(alien)
+        root.update()
 
 
 def update_game_state():
-    for alien in aliens.swarm:
-        alien.move_right()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
-    for alien in aliens.swarm:
-        alien.move_down()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
-    for alien in aliens.swarm:
-        alien.move_right()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
-    for alien in aliens.swarm:
-        alien.move_down()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
-    for alien in aliens.swarm:
-        alien.move_left()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
-    for alien in aliens.swarm:
-        alien.move_down()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
-    for alien in aliens.swarm:
-        alien.move_left()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
-    for alien in aliens.swarm:
-        alien.move_down()
-        if ship.is_shooting:
-            ship.shooting()
-        root.update()
+    # Updates aliens and bullet movement in the same loops
+    select_alien()
+    move_aliens_right()
+    move_aliens_down()
+    move_aliens_right()
+    move_aliens_down()
+    move_aliens_left()
+    move_aliens_down()
+    move_aliens_left()
+    move_aliens_down()
 
 
 root = Screen()
@@ -55,7 +60,7 @@ root.bgcolor("black")
 root.tracer(0)
 
 scoreboard = Scoreboard()
-ship = Ship(root)
+ship = Ship()
 aliens = AlienManager()
 
 root.onkeypress(ship.move_left, "Left")

@@ -1,4 +1,4 @@
-from turtle import Turtle, register_shape, Screen
+from turtle import Turtle, register_shape
 from bullet import Bullet
 
 ship_img = "./images/ship.gif"
@@ -7,9 +7,8 @@ register_shape(ship_img)
 
 class Ship(Turtle):
 
-    def __init__(self, screen=Screen):
+    def __init__(self):
         super().__init__()
-        self.root = screen
         self.bullet = None
         self.can_shoot = True
         self.is_shooting = False

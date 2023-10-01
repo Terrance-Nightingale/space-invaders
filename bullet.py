@@ -1,7 +1,7 @@
 from turtle import Turtle
 
 BULLET_SPEED = 10
-ENEMY_BULLET_SPEED = 3
+ENEMY_BULLET_SPEED = 15
 
 
 class Bullet(Turtle):
