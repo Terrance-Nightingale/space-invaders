@@ -14,8 +14,8 @@ class Ship(Turtle):
         self.shape(ship_img)
         self.shapesize(stretch_wid=0.1, stretch_len=0.1)
         self.setpos(0, -280)
-        # self.lives = []
-        # List of current remaining lives. These are turtle objects with ship.gif as the shape.
+        self.lives = []
+        self.set_lives()
 
     def move_left(self):
         current_x = self.xcor()
@@ -43,3 +43,14 @@ class Ship(Turtle):
     def lose_life(self):
         # Deletes a life from self.lives
         pass
+
+    def set_lives(self):
+        x_pos = 260
+        y_pos = -350
+        for _ in range(0, 3):
+            life = Turtle()
+            life.shape(ship_img)
+            life.shapesize(stretch_wid=0.1, stretch_len=0.1)
+            life.setpos(x_pos, y_pos)
+            x_pos += 50
+            self.lives.append(life)

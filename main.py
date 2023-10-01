@@ -12,7 +12,7 @@ root.tracer(0)
 
 scoreboard = Scoreboard()
 ship = Ship(root)
-aliens = AlienManager()
+aliens = AlienManager(root)
 
 root.onkeypress(ship.move_left, "Left")
 root.onkeypress(ship.move_right, "Right")
@@ -23,9 +23,7 @@ playing = True
 while playing:
     root.update()
 
-    for alien in aliens.swarm:
-        alien.move()
-        root.update()
+    aliens.move_swarm()
 
     time.sleep(0.03)
 

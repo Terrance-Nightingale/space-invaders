@@ -1,11 +1,12 @@
-from turtle import Turtle, register_shape
+from turtle import Turtle, Screen, register_shape
 
 alien_img = "./images/alien.gif"
 register_shape(alien_img)
 
 
 class AlienManager:
-    def __init__(self):
+    def __init__(self, screen=Screen):
+        self.root = screen
         self.swarm = []
         self.create_swarm()
 
@@ -25,6 +26,32 @@ class AlienManager:
             y_pos -= 75
             start_x *= -1
 
+    def move_swarm(self):
+        for alien in self.swarm:
+            alien.move_right()
+            self.root.update()
+        for alien in self.swarm:
+            alien.move_down()
+            self.root.update()
+        for alien in self.swarm:
+            alien.move_right()
+            self.root.update()
+        for alien in self.swarm:
+            alien.move_down()
+            self.root.update()
+        for alien in self.swarm:
+            alien.move_left()
+            self.root.update()
+        for alien in self.swarm:
+            alien.move_down()
+            self.root.update()
+        for alien in self.swarm:
+            alien.move_left()
+            self.root.update()
+        for alien in self.swarm:
+            alien.move_down()
+            self.root.update()
+
 
 class Alien(Turtle):
 
@@ -35,9 +62,20 @@ class Alien(Turtle):
         self.shapesize(stretch_wid=0.1, stretch_len=0.1)
         self.setpos(x_pos, y_pos)
 
-    def move(self):
-        current_x = self.xcor()
-        self.setx(current_x + 5)
+    def move_right(self):
+        for _ in range(0, 2):
+            current_x = self.xcor()
+            self.setx(current_x + 5)
+
+    def move_left(self):
+        for _ in range(0, 2):
+            current_x = self.xcor()
+            self.setx(current_x - 5)
+
+    def move_down(self):
+        for _ in range(0, 2):
+            current_y = self.ycor()
+            self.sety(current_y - 0.5)
 
     def die(self):
         # Deletes the alien object if hit by a bullet.
