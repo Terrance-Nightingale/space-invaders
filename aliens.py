@@ -1,5 +1,6 @@
 from turtle import Turtle, register_shape
 from bullet import Bullet
+from random import randint
 
 BULLET_COLOR = "#02db4b"
 alien_img = "./images/alien.gif"
@@ -8,10 +9,6 @@ register_shape(alien_img)
 
 class AlienManager:
     def __init__(self):
-        self.swarm = []
-        self.create_swarm()
-
-    def respawn(self):
         self.swarm = []
         self.create_swarm()
 
@@ -27,6 +24,37 @@ class AlienManager:
             y_pos -= 75
             start_x *= -1
 
+    def respawn(self):
+        self.swarm = []
+        self.create_swarm()
+
+    def select_shooter(self):
+        position = randint(0, len(self.swarm) - 1)
+        shooter = self.swarm[position]
+        shooter.shoot()
+
+    def die(self, alien):
+        # Delete alien's bullet, if any
+        try:
+            alien.bullet.hideturtle()
+            del alien.bullet
+        except AttributeError:
+            pass
+        # Delete alien
+        alien.hideturtle()
+        alien_to_die = self.swarm.index(alien)
+        del self.swarm[alien_to_die]
+
+    def reached_end(self):
+        game_over = False
+        if self.swarm:
+            for alien in self.swarm:
+                if alien.ycor() <= -380:
+                    game_over = True
+                else:
+                    game_over = False
+        return game_over
+
 
 class Alien(Turtle):
 
@@ -34,6 +62,7 @@ class Alien(Turtle):
         super().__init__()
         self.is_shooting = False
         self.can_shoot = True
+        self.hit = False
         self.bullet = None
         self.penup()
         self.shape(alien_img)
@@ -55,10 +84,6 @@ class Alien(Turtle):
             current_y = self.ycor()
             self.sety(current_y - 0.5)
 
-    def die(self):
-        # Deletes the alien object if hit by a bullet.
-        pass
-
     def shoot(self):
         if self.can_shoot:
             self.bullet = Bullet()
@@ -76,8 +101,13 @@ class Alien(Turtle):
             if self.bullet.current_y >= -400:
                 self.bullet.enemy_move()
             else:
+                self.bullet.hideturtle()
                 del self.bullet
                 self.can_shoot = True
                 self.is_shooting = False
         except AttributeError:
             pass
+
+    def hit_ship(self, ship):
+        if self.distance(ship) < 30:
+            return True

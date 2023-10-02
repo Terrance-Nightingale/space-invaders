@@ -12,6 +12,7 @@ class Ship(Turtle):
         self.bullet = None
         self.can_shoot = True
         self.is_shooting = False
+        self.hit = False
         self.shape(ship_img)
         self.shapesize(stretch_wid=0.1, stretch_len=0.1)
         self.setpos(0, -280)
@@ -35,6 +36,7 @@ class Ship(Turtle):
             if self.bullet.current_y <= 400:
                 self.bullet.move()
             else:
+                self.bullet.hideturtle()
                 del self.bullet
                 self.can_shoot = True
                 self.is_shooting = False
@@ -49,8 +51,9 @@ class Ship(Turtle):
             self.is_shooting = True
 
     def lose_life(self):
-        # Deletes a life from self.lives
-        pass
+        self.lives[-1].hideturtle()
+        del self.lives[-1]
+        self.hit = False
 
     def set_lives(self):
         x_pos = 260
